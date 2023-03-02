@@ -23,17 +23,22 @@ const galleryItemsEl = galleryItems
 
 galleryEl.insertAdjacentHTML("beforeend", galleryItemsEl);
 
+galleryEl.addEventListener("click", handleClickImage);
+
 function handleClickImage(event) {
   event.preventDefault();
   if (event.target.nodeName !== "IMG") {
     return;
   }
 
-  const instance = basicLightbox.create(`
-    <img src="${event.target.dataset.source}" width="800" height="600">
-`);
-
+  const instance = basicLightbox.create(
+    ` <img src="${event.target.dataset.source}" width="800" height="600">`
+  );
   instance.show();
-}
 
-galleryEl.addEventListener("click", handleClickImage);
+  window.addEventListener("keydown", (event) => {
+    if (event.code === "Escape" || event.code === "Enter") {
+      instance.close();
+    }
+  });
+}
