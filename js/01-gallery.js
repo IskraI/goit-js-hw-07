@@ -30,15 +30,26 @@ function handleClickImage(event) {
   if (event.target.nodeName !== "IMG") {
     return;
   }
-
   const instance = basicLightbox.create(
-    ` <img src="${event.target.dataset.source}" width="800" height="600">`
+    ` <img src="${event.target.dataset.source}" width="800" height="600">`,
+    {
+      onShow: (instance) => {
+        window.addEventListener("keydown", handleEscPress);
+      },
+      onClose: (instance) => {
+        window.removeEventListener("keydown", handleEscPress);
+      },
+    }
   );
+
   instance.show();
 
-  window.addEventListener("keydown", (event) => {
+  function handleEscPress(event) {
     if (event.code === "Escape" || event.code === "Enter") {
       instance.close();
     }
-  });
+    console.log(event);
+  }
+
+  console.log(event);
 }
